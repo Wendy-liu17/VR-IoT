@@ -1,7 +1,7 @@
 # Download folders listed below as .unitypackage files from the latest release
 
 #/Assets/com.tsinghua.iotvrp/Scenes/
-#/Assets/com.tsinghua.iotvrp/Thirdparty/
+/Assets/com.tsinghua.iotvrp/Thirdparty/
 #/Assets/com.tsinghua.iotvrp/Resources/
 #/Assets/com.tsinghua.iotvrp/Prefabs/
 
