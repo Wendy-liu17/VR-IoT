@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Video;
 
 public class MyGazeItem : MySensorItem
 {
     private Camera mainCamera;
+    public VideoPlayer videoPlayer;
 
 	void Start() {
         Debug.Log("Gaze Start!!!");
 		if (!mainCamera)
 			mainCamera = Camera.main;
-        UnityAction triggeredAction = new UnityAction(func1);
-        UnityAction untriggeredAction = new UnityAction(func2);
+        // videoPlayer = this.GetComponent<VideoPlayer>();
+        UnityAction triggeredAction = new UnityAction(playVideo);
+        UnityAction untriggeredAction = new UnityAction(pasueVideo);
         setTriggered(triggeredAction);
         setUnTriggered(untriggeredAction);
 	}
@@ -25,11 +28,15 @@ public class MyGazeItem : MySensorItem
             SensorUntrigger();
 	}
 
-    void func1() {
+    void playVideo() {
         Debug.Log("In sight!");
+        if (!videoPlayer.isPlaying)
+            videoPlayer.Play();
     }
 
-    void func2() {
+    void pasueVideo() {
         Debug.Log("Out of sight!");
+        if (videoPlayer.isPlaying)
+            videoPlayer.Pause();
     }
 }
