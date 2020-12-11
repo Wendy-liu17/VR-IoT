@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/com.tsinghua.iotvrp/Scenes/Client.unity
     guid: ff2b99b089b0fd64f9d8f34c218f22fa
+  - enabled: 1
+    path: Assets/GestureRecognition/Scenes/GestureSample.unity
+    guid: fe7c1f3d0bf82a546aeb1915f9463945
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: aa7cfac49ab4b874a8992e1bdcab56d3,
       type: 2}
