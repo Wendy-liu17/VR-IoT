@@ -7,8 +7,7 @@ public class MyEvent1:UnityEvent<int>{}
 public class MyEvent2:UnityEvent<int,int>{}
 
 
-public class MySensorItem : MonoBehaviour
-{
+public class MySensorItem : MonoBehaviour {
     [SerializeField]
     [Tooltip("Action performed after sensor is triggered")]
     UnityEvent triggeredEvent;

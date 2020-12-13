@@ -8,8 +8,7 @@ using UnityEngine.Events;
 // public class MyEvent1:UnityEvent<int>{}
 
 
-public class videoControl : MonoBehaviour
-{
+public class videoControl : MonoBehaviour {
     private VideoPlayer current_videoPlayer;
     private RawImage current_rawImage;
     private int current;
@@ -28,8 +27,7 @@ public class videoControl : MonoBehaviour
     public RawImage rawImage2;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         //获取VideoPlayr和RawImage组件
         current_videoPlayer = videoPlayer;
         current_rawImage = rawImage2;
@@ -41,63 +39,59 @@ public class videoControl : MonoBehaviour
         button_switch.onClick.AddListener(fun2);
         action_throw = new UnityAction<int>(throw_video);
         action_scratch = new UnityAction(scratch);
-        action_pause_play = new UnityAction(OnplayOrPauseVideo);
+        action_pause_play = new UnityAction(OnPlayOrPauseVideo);
         myEvent1.AddListener(action_throw);
         myEvent.AddListener(action_scratch);
-
-
-
     }
 
-    void fun1(){
-            myEvent.Invoke();
-
+    void fun1() {
+        myEvent.Invoke();
     }
 
-    void fun2(){
-            myEvent1.Invoke(1);
+    void fun2() {
+        myEvent1.Invoke(1);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if(current_videoPlayer.texture == null)
-        {
-            return;
-        }
+    void Update() {
+        if (current_videoPlayer.texture == null) return;
         current_rawImage.texture = current_videoPlayer.texture;
     }
 
-    public void OnplayOrPauseVideo()
-    {
+    public void OnPlayOrPauseVideo() {
         //这里是判断视频的播放情况，播放的情况下就暂停，反之；
         //然后更新相关文本
-        if(current_videoPlayer.isPlaying == true)
-        {
+        if (current_videoPlayer.isPlaying)
             current_videoPlayer.Pause();
-        }
         else
-        {
             current_videoPlayer.Play();
-        }
     }
 
-    public void scratch(){
+    public void OnPlayVideo() {
+        if (!current_videoPlayer.isPlaying)
+            current_videoPlayer.Play();
+    }
+
+    public void OnPauseVideo() {
+        if (current_videoPlayer.isPlaying)
+            current_videoPlayer.Pause();
+    }
+
+    public void scratch() {
         current_videoPlayer.Pause();
         // current_rawImage.texture=null;
     }
 
-    public void throw_video(int num){
-        current_rawImage.texture=null;
-        switch (num)
-        {
+    public void throw_video(int num) {
+        current_rawImage.texture = null;
+        switch (num) {
             case 1:
                 current_rawImage = rawImage1;
-                current=1;
+                current = 1;
                 break;
             case 2:
                 current_rawImage = rawImage2;
-                current=2;
+                current = 2;
                 break;
             default:
                 return;
@@ -107,22 +101,20 @@ public class videoControl : MonoBehaviour
         current_videoPlayer.Play();
     }
 
-    public void SwitchTV(int num)
-    {
+    public void SwitchTV(int num) {
         //这里是判断视频的播放情况，播放的情况下就暂停，反之；
         //然后更新相关文本
         current_videoPlayer.Pause();
         current_rawImage.texture=null;
-        if(current==1){
+        if(current == 1) {
             current_rawImage = rawImage2;
-            current=2;
+            current = 2;
         }
-        else{ 
+        else { 
             current_rawImage = rawImage1;
-            current=1;
+            current = 1;
         }
         current_rawImage.texture = videoPlayer.texture;
         current_videoPlayer.Play();
     }
-
 }
