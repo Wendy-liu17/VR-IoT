@@ -18,7 +18,6 @@ public class GestureDetector : MonoBehaviour {
     public OVRSkeleton skeleton;
     public List<Gesture> gestures;
     public bool debugMode = true;
-    public Text
     private List<OVRBone> fingerBones;
     private Gesture previousGesture;
 
