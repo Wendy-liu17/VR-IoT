@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MyGestureItem : MonoBehaviour {
+public class MyGestureItem : MonoBehaviour
+{
     [Tooltip("Drag the gesture you wish to track here")]
     public GestureSO fistGesture;
     public GestureSO palmGesture;
@@ -26,14 +27,16 @@ public class MyGestureItem : MonoBehaviour {
     private GestureSO prevGesture, curGesture;
     private OVRHand hand;
 
-    private void Start() {
+    private void Start()
+    {
         lastRecognition = timeBetweenRecognition;
         prevGesture = null;
         curGesture = null;
         LoadSkeleton();
     }
 
-    private void Update() {
+    private void Update()
+    {
         if (fistGesture == null || palmGesture == null) return;
 
         lastRecognition += Time.deltaTime;
@@ -41,14 +44,17 @@ public class MyGestureItem : MonoBehaviour {
         if (lastRecognition < timeBetweenRecognition) return;
 
         curGesture = CheckRecognition();
-        if (curGesture != null) {
+        if (curGesture != null)
+        {
             Debug.Log("Recognized Gesture" + curGesture.name);
-            if (curGesture.name == fistGesture.name) {
+            if (curGesture.name == fistGesture.name)
+            {
                 Debug.Log("===============recognized fist===============\n");
                 if (prevGesture == palmGesture && lastRecognition < 5 * timeBetweenRecognition)
                     OnGrab?.Invoke();
             }
-            else {
+            else
+            {
                 Debug.Log("===============recognized palm===============\n");
                 if (prevGesture == fistGesture && lastRecognition < 5 * timeBetweenRecognition)
                     OnThrow?.Invoke();
@@ -59,7 +65,8 @@ public class MyGestureItem : MonoBehaviour {
         }
     }
 
-    GestureSO CheckRecognition() {
+    GestureSO CheckRecognition()
+    {
         if (fingerBones.Count == 0) LoadSkeleton();
 
         if (fingerBones.Count == 0) return null;
@@ -68,19 +75,22 @@ public class MyGestureItem : MonoBehaviour {
 
         if (!hand.IsDataHighConfidence && waitForHighConfidenceData) return null;
 
-        // fist gesture?
+        // fist gesture
         float sumDistance = 0;
         bool isDiscarded = false;
-        for (int i = 0; i < fingerBones.Count; i++) {
+        for (int i = 0; i < fingerBones.Count; i++)
+        {
             Vector3 currentData = skeleton.transform.InverseTransformPoint(fingerBones[i].Transform.position);
             float distance = Vector3.Distance(fistGesture.fingerPositions[i], currentData);
-            if (distance > recognitionThreshold) {
+            if (distance > recognitionThreshold)
+            {
                 isDiscarded = true;
                 break;
             }
             sumDistance = distance;
         }
-        if (!isDiscarded) {
+        if (!isDiscarded)
+        {
             Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
             return fistGesture;
         }
@@ -88,16 +98,19 @@ public class MyGestureItem : MonoBehaviour {
         // palm gesture
         sumDistance = 0;
         isDiscarded = false;
-        for (int i = 0; i < fingerBones.Count; i++) {
+        for (int i = 0; i < fingerBones.Count; i++)
+        {
             Vector3 currentData = skeleton.transform.InverseTransformPoint(fingerBones[i].Transform.position);
             float distance = Vector3.Distance(palmGesture.fingerPositions[i], currentData);
-            if (distance > recognitionThreshold) {
+            if (distance > recognitionThreshold)
+            {
                 isDiscarded = true;
                 break;
             }
             sumDistance = distance;
         }
-        if (!isDiscarded) {
+        if (!isDiscarded)
+        {
             Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
             return palmGesture;
         }
@@ -106,9 +119,11 @@ public class MyGestureItem : MonoBehaviour {
         return null;
     }
 
-    void LoadSkeleton() {
+    void LoadSkeleton()
+    {
         OVRSkeleton[] skeletons = FindObjectsOfType<OVRSkeleton>();
-        foreach (OVRSkeleton _skeleton in skeletons) {
+        foreach (OVRSkeleton _skeleton in skeletons)
+        {
             if (fistGesture.hand == GestureHand.RightHand && _skeleton.GetSkeletonType() == OVRSkeleton.SkeletonType.HandRight)
                 skeleton = _skeleton;
             else if (fistGesture.hand == GestureHand.LeftHand && _skeleton.GetSkeletonType() == OVRSkeleton.SkeletonType.HandLeft)

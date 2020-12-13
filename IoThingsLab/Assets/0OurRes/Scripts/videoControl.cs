@@ -5,19 +5,17 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.Events;
 
-// public class MyEvent1:UnityEvent<int>{}
+[System.Serializable]
+public class ThrowEvent : UnityEvent<int> { }
 
 
-public class videoControl : MonoBehaviour {
-    private VideoPlayer current_videoPlayer;
-    private RawImage current_rawImage;
-    private int current;
+public class videoControl : MonoBehaviour
+{
+    public UnityAction action_grab;
     public UnityAction<int> action_throw;
-    public UnityAction action_scratch;
     public UnityAction action_pause_play;
-    public UnityEvent myEvent = new UnityEvent();
-    public MyEvent1 myEvent1 = new MyEvent1();
-
+    public UnityEvent grabEvent = new UnityEvent();
+    public ThrowEvent throwEvent = new ThrowEvent();
 
     //设置相关参数以及视频列表
     public Button button_PlayOrPause;
@@ -26,39 +24,48 @@ public class videoControl : MonoBehaviour {
     public RawImage rawImage1;
     public RawImage rawImage2;
 
+    private VideoPlayer current_videoPlayer;
+    private RawImage current_rawImage;
+    private int current;
+
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         //获取VideoPlayr和RawImage组件
         current_videoPlayer = videoPlayer;
         current_rawImage = rawImage2;
-        rawImage2.texture=null;
-        rawImage1.texture=null;
-        current=2;
+        rawImage2.texture = null;
+        rawImage1.texture = null;
+        current = 2;
         //设置相关按钮监听事件
         button_PlayOrPause.onClick.AddListener(fun1);
         button_switch.onClick.AddListener(fun2);
-        action_throw = new UnityAction<int>(throw_video);
-        action_scratch = new UnityAction(scratch);
+        action_throw = new UnityAction<int>(ThrowVideo);
+        action_grab = new UnityAction(GrabVideo);
         action_pause_play = new UnityAction(OnPlayOrPauseVideo);
-        myEvent1.AddListener(action_throw);
-        myEvent.AddListener(action_scratch);
+        throwEvent.AddListener(action_throw);
+        grabEvent.AddListener(action_grab);
     }
 
-    void fun1() {
-        myEvent.Invoke();
+    void fun1()
+    {
+        grabEvent.Invoke();
     }
 
-    void fun2() {
-        myEvent1.Invoke(1);
+    void fun2()
+    {
+        throwEvent.Invoke(1);
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         if (current_videoPlayer.texture == null) return;
         current_rawImage.texture = current_videoPlayer.texture;
     }
 
-    public void OnPlayOrPauseVideo() {
+    public void OnPlayOrPauseVideo()
+    {
         //这里是判断视频的播放情况，播放的情况下就暂停，反之；
         //然后更新相关文本
         if (current_videoPlayer.isPlaying)
@@ -67,24 +74,29 @@ public class videoControl : MonoBehaviour {
             current_videoPlayer.Play();
     }
 
-    public void OnPlayVideo() {
+    public void OnPlayVideo()
+    {
         if (!current_videoPlayer.isPlaying)
             current_videoPlayer.Play();
     }
 
-    public void OnPauseVideo() {
+    public void OnPauseVideo()
+    {
         if (current_videoPlayer.isPlaying)
             current_videoPlayer.Pause();
     }
 
-    public void scratch() {
+    public void GrabVideo()
+    {
         current_videoPlayer.Pause();
         // current_rawImage.texture=null;
     }
 
-    public void throw_video(int num) {
+    public void ThrowVideo(int num)
+    {
         current_rawImage.texture = null;
-        switch (num) {
+        switch (num)
+        {
             case 1:
                 current_rawImage = rawImage1;
                 current = 1;
@@ -101,16 +113,19 @@ public class videoControl : MonoBehaviour {
         current_videoPlayer.Play();
     }
 
-    public void SwitchTV(int num) {
+    public void SwitchTV(int num)
+    {
         //这里是判断视频的播放情况，播放的情况下就暂停，反之；
         //然后更新相关文本
         current_videoPlayer.Pause();
-        current_rawImage.texture=null;
-        if(current == 1) {
+        current_rawImage.texture = null;
+        if (current == 1)
+        {
             current_rawImage = rawImage2;
             current = 2;
         }
-        else { 
+        else
+        {
             current_rawImage = rawImage1;
             current = 1;
         }
