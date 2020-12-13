@@ -3,77 +3,67 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MyGestureItem : MonoBehaviour
+public class MyGestureItem
 {
-    [Tooltip("Drag the gesture you wish to track here")]
-    public GestureSO fistGesture;
-    public GestureSO palmGesture;
-    [Tooltip("Event that runs when we recognize a gesture")]
-    public UnityEvent OnGrab;
-    public UnityEvent OnThrow;
-    [SerializeField]
-    [Tooltip("Is this gesture recognizer active right now?")]
-    public bool shouldRecognize = true;
-    [Tooltip("Minimum required wait time before firing another recogintion event")]
-    public float timeBetweenRecognition = 1f;
-    [Tooltip("Raising this value will result in more recognition at the cost of precision and accuracy")]
-    public float recognitionThreshold = .05f;
-    [Tooltip("Enabling this will only trigger recognition when we are certain we can see hands")]
-    public bool waitForHighConfidenceData = true;
+    private GestureSO fistGesture;
+    private GestureSO palmGesture;
+    private float timeBetweenRecognition;
+    private float recognitionThreshold;
+    private bool waitForHighConfidenceData;
 
-    private OVRSkeleton skeleton;
-    private List<OVRBone> fingerBones;
     private float lastRecognition;
     private GestureSO prevGesture, curGesture;
-    private OVRHand hand;
 
-    private void Start()
+    public void Init(GestureSO gesture1, GestureSO gesture2, float timeBetween, float threshold, bool wait)
     {
+        fistGesture = gesture1;
+        palmGesture = gesture2;
+        timeBetweenRecognition = timeBetween;
+        recognitionThreshold = threshold;
+        waitForHighConfidenceData = wait;
         lastRecognition = timeBetweenRecognition;
         prevGesture = null;
         curGesture = null;
-        LoadSkeleton();
     }
 
-    private void Update()
+    // -1: no gesture, 1: throw, 2: grab
+    public int Triggered(OVRSkeleton skeleton, List<OVRBone> fingerBones, OVRHand hand)
     {
-        if (fistGesture == null || palmGesture == null) return;
-
+        if (fistGesture == null || palmGesture == null)
+            return -1;
         lastRecognition += Time.deltaTime;
+        if (lastRecognition < timeBetweenRecognition)
+            return -1;
 
-        if (lastRecognition < timeBetweenRecognition) return;
-
-        curGesture = CheckRecognition();
+        curGesture = CheckRecognition(skeleton, fingerBones, hand);
         if (curGesture != null)
         {
-            Debug.Log("Recognized Gesture" + curGesture.name);
-            if (curGesture.name == fistGesture.name)
+            if (curGesture.name == palmGesture.name)
             {
-                Debug.Log("===============recognized fist===============\n");
-                if (prevGesture == palmGesture && lastRecognition < 5 * timeBetweenRecognition)
-                    OnGrab?.Invoke();
+                if (prevGesture == fistGesture && lastRecognition < 5 * timeBetweenRecognition)
+                    return 1;
             }
             else
             {
-                Debug.Log("===============recognized palm===============\n");
-                if (prevGesture == fistGesture && lastRecognition < 5 * timeBetweenRecognition)
-                    OnThrow?.Invoke();
+                if (prevGesture == palmGesture && lastRecognition < 5 * timeBetweenRecognition)
+                    return 2;
             }
             prevGesture = curGesture;
             lastRecognition = 0f;
-            return;
         }
+        return -1;
     }
 
-    GestureSO CheckRecognition()
+    GestureSO CheckRecognition(OVRSkeleton skeleton, List<OVRBone> fingerBones, OVRHand hand)
     {
-        if (fingerBones.Count == 0) LoadSkeleton();
-
-        if (fingerBones.Count == 0) return null;
-
-        if (!hand.IsTracked) return null;
-
-        if (!hand.IsDataHighConfidence && waitForHighConfidenceData) return null;
+        // if (fingerBones.Count == 0)
+        //     LoadSkeleton();
+        if (fingerBones.Count == 0)
+            return null;
+        if (!hand.IsTracked)
+            return null;
+        if (!hand.IsDataHighConfidence && waitForHighConfidenceData)
+            return null;
 
         // fist gesture
         float sumDistance = 0;
@@ -115,24 +105,6 @@ public class MyGestureItem : MonoBehaviour
             return palmGesture;
         }
 
-        // no gesture
         return null;
-    }
-
-    void LoadSkeleton()
-    {
-        OVRSkeleton[] skeletons = FindObjectsOfType<OVRSkeleton>();
-        foreach (OVRSkeleton _skeleton in skeletons)
-        {
-            if (fistGesture.hand == GestureHand.RightHand && _skeleton.GetSkeletonType() == OVRSkeleton.SkeletonType.HandRight)
-                skeleton = _skeleton;
-            else if (fistGesture.hand == GestureHand.LeftHand && _skeleton.GetSkeletonType() == OVRSkeleton.SkeletonType.HandLeft)
-                skeleton = _skeleton;
-        }
-
-        fingerBones = new List<OVRBone>(skeleton.Bones);
-        hand = skeleton.gameObject.GetComponent<OVRHand>();
-
-        if (fingerBones == null || skeleton == null) Debug.LogWarning("Failed to find skeleton for " + fistGesture.hand + ". Do you have an OVRHandPrefab in the scene and setup?");
     }
 }
