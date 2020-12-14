@@ -9,7 +9,7 @@ public class SwitchController : MonoBehaviour
     public GestureSO palmGesture;
     public UnityEvent onGrab;
     public ThrowEvent onThrow;
-    public float timeBetweenRecognition = 1f;
+    public float timeBetweenRecognition = 0.5f;
     public float recognitionThreshold = .05f;
     public bool waitForHighConfidenceData = true;
     public int curIdx = 0;
