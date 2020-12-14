@@ -82,17 +82,19 @@ public class SwitchController : MonoBehaviour
     }
 
     public void switchFunc() {
-        if (isTriggered)
-        {
-            isTriggered = false;
-            Debug.Log("Throw!");
-            onThrow.Invoke(curIdx);
-        }
-        else
-        {
-            isTriggered = true;
-            Debug.Log("Grab!");
-            onGrab.Invoke();
+        if (methodIdx == 4) {
+            if (isTriggered)
+            {
+                isTriggered = false;
+                Debug.Log("Throw!");
+                onThrow.Invoke(curIdx);
+            }
+            else
+            {
+                isTriggered = true;
+                Debug.Log("Grab!");
+                onGrab.Invoke();
+            }
         }
     }
 
