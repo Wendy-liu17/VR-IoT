@@ -18,10 +18,10 @@ public class GestureRecognizer : MonoBehaviour
     private bool shouldRecognize = true;
 
     [Tooltip("Minimum required wait time before firing another recogintion event")]
-    public float timeBetweenRecognition = 5f;
+    public float timeBetweenRecognition = 0.5f;
 
     [Tooltip("Raising this value will result in more recognition at the cost of precision and accuracy")]
-    public float recognitionThreshold = .04f;
+    public float recognitionThreshold = .05f;
 
 
 
