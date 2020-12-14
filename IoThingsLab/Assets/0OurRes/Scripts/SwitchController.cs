@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class SwitchController : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class SwitchController : MonoBehaviour
     public GestureSO palmGesture;
     public UnityEvent onGrab;
     public ThrowEvent onThrow;
+
+    public Button button_method1;
+    public Button button_method2;
+    public Button button_method3;
+    public Button button_method4;
 
     public float timeBetweenRecognition = 0.5f;
     public float recognitionThreshold = .05f;
@@ -37,6 +43,35 @@ public class SwitchController : MonoBehaviour
         myGestureItem = new MyGestureItem();
         LoadSkeleton();
         myGestureItem.Init(fistGesture, palmGesture, timeBetweenRecognition, recognitionThreshold, waitForHighConfidenceData);
+
+        button_method1.onClick.AddListener(func1);
+        button_method2.onClick.AddListener(func2);
+        button_method3.onClick.AddListener(func3);
+        button_method4.onClick.AddListener(func4);
+    }
+
+    void func1()
+    {
+        methodIdx = 1;
+        Debug.Log("Button 1 clicked!");
+    }
+
+    void func2()
+    {
+        methodIdx = 2;
+        Debug.Log("Button 2 clicked!");
+    }
+
+    void func3()
+    {
+        methodIdx = 3;
+        Debug.Log("Button 3 clicked!");
+    }
+
+    void func4()
+    {
+        methodIdx = 4;
+        Debug.Log("Button 4 clicked!");
     }
 
     void Update()
@@ -46,21 +81,21 @@ public class SwitchController : MonoBehaviour
         switch (methodIdx)
         {
             // sight
-            case 0:
+            case 1:
                 if (mySightItem.Triggered(transform))
                     flag = 1;
                 else
                     flag = 2;
                 break;
             // dist
-            case 1:
+            case 2:
                 if (myDistItem.Triggered(transform))
                     flag = 1;
                 else
                     flag = 2;
                 break;
             // gesture
-            case 2:
+            case 3:
                 if (mySightItem.Triggered(transform) && myDistItem.Triggered(transform))
                     flag = myGestureItem.Triggered(skeleton, fingerBones, hand);
                 else

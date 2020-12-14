@@ -40,13 +40,19 @@ public class MyGestureItem
         {
             if (curGesture.name == palmGesture.name)
             {
-                if (prevGesture == fistGesture && lastRecognition < 5 * timeBetweenRecognition)
+                if (prevGesture == fistGesture && lastRecognition < 5 * timeBetweenRecognition) {
+                    prevGesture = curGesture;
+                    lastRecognition = 0f;
                     return 1;
+                }
             }
             else
             {
-                if (prevGesture == palmGesture && lastRecognition < 5 * timeBetweenRecognition)
+                if (prevGesture == palmGesture && lastRecognition < 5 * timeBetweenRecognition) {
+                    prevGesture = curGesture;
+                    lastRecognition = 0f;
                     return 2;
+                }
             }
             prevGesture = curGesture;
             lastRecognition = 0f;
