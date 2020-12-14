@@ -16,10 +16,10 @@ public class MyDistItem
     {
         if (transform.position[0] - mainCamera.transform.position[0] > 0 && transform.position[0] - mainCamera.transform.position[0] < 5 && System.Math.Abs(transform.position[2] - mainCamera.transform.position[2]) < 2.2)
         {
-            Debug.Log("In dist!");
+            // Debug.Log("In dist!");
             return true;
         }
-        Debug.Log("Out of dist!");
+        // Debug.Log("Out of dist!");
         return false;
     }
 }

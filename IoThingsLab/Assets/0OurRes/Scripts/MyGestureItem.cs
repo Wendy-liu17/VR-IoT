@@ -87,7 +87,7 @@ public class MyGestureItem
         }
         if (!isDiscarded)
         {
-            Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
+            // Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
             return fistGesture;
         }
 
@@ -107,7 +107,7 @@ public class MyGestureItem
         }
         if (!isDiscarded)
         {
-            Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
+            // Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
             return palmGesture;
         }
 

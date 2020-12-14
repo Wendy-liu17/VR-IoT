@@ -96,7 +96,7 @@ public class SwitchController : MonoBehaviour
                 break;
             // gesture
             case 3:
-                if (mySightItem.Triggered(transform) && myDistItem.Triggered(transform))
+                if (mySightItem.Triggered(transform))
                     flag = myGestureItem.Triggered(skeleton, fingerBones, hand);
                 else
                     flag = -1;
