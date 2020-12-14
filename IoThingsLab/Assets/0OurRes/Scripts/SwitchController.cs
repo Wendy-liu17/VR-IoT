@@ -11,10 +11,11 @@ public class SwitchController : MonoBehaviour
     public UnityEvent onGrab;
     public ThrowEvent onThrow;
 
-    public Button button_method1;
-    public Button button_method2;
-    public Button button_method3;
-    public Button button_method4;
+    // public Button methodButton1;
+    // public Button methodButton2;
+    // public Button methodButton3;
+    // public Button methodButton4;
+    // public Button switchButton;
 
     public float timeBetweenRecognition = 0.5f;
     public float recognitionThreshold = .05f;
@@ -36,6 +37,11 @@ public class SwitchController : MonoBehaviour
         Debug.Log("Controller Start!!!");
         if (!mainCamera)
             mainCamera = Camera.main;
+
+        if (curIdx == 1)
+            isTriggered = true;
+        if (curIdx == 2)
+            isTriggered = false;
         mySightItem = new MySightItem();
         mySightItem.Init(mainCamera);
         myDistItem = new MyDistItem();
@@ -44,34 +50,50 @@ public class SwitchController : MonoBehaviour
         LoadSkeleton();
         myGestureItem.Init(fistGesture, palmGesture, timeBetweenRecognition, recognitionThreshold, waitForHighConfidenceData);
 
-        button_method1.onClick.AddListener(func1);
-        button_method2.onClick.AddListener(func2);
-        button_method3.onClick.AddListener(func3);
-        button_method4.onClick.AddListener(func4);
+        // methodButton1.onClick.AddListener(func1);
+        // methodButton2.onClick.AddListener(func2);
+        // methodButton3.onClick.AddListener(func3);
+        // methodButton4.onClick.AddListener(func4);
+        // switchButton.onClick.AddListener(switchFunc);
     }
 
-    void func1()
+    public void func1()
     {
         methodIdx = 1;
         Debug.Log("Button 1 clicked!");
     }
 
-    void func2()
+    public void func2()
     {
         methodIdx = 2;
         Debug.Log("Button 2 clicked!");
     }
 
-    void func3()
+    public void func3()
     {
         methodIdx = 3;
         Debug.Log("Button 3 clicked!");
     }
 
-    void func4()
+    public void func4()
     {
         methodIdx = 4;
         Debug.Log("Button 4 clicked!");
+    }
+
+    public void switchFunc() {
+        if (isTriggered)
+        {
+            isTriggered = false;
+            Debug.Log("Throw!");
+            onThrow.Invoke(curIdx);
+        }
+        else
+        {
+            isTriggered = true;
+            Debug.Log("Grab!");
+            onGrab.Invoke();
+        }
     }
 
     void Update()

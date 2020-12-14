@@ -7,7 +7,7 @@ public class playButton : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         this.GetComponent<Button>().onClick.AddListener(delegate() {
-            // Debug.Log("点击了按钮");
+            Debug.Log("点击了按钮");
         });
     }
 
