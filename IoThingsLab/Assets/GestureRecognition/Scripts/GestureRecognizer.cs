@@ -54,8 +54,6 @@ public class GestureRecognizer : MonoBehaviour
 
         if (lastRecognition < timeBetweenRecognition) return;
 
-        // OnGestureRecognized?.Invoke();
-
         if (CheckRecognition())
         {
             Debug.Log("Recognized Gesture" + gestureToRecognize.name);

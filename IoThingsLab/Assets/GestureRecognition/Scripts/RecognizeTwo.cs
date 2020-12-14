@@ -12,8 +12,8 @@ public class RecognizeTwo : MonoBehaviour
     public GestureSO gestureToRecognize2;
 
     [Tooltip("Event that runs when we recognize a gesture")]
-    public MyEvent1 OnGesture1Recognized;
-    public MyEvent1 OnGesture2Recognized;
+    public UnityEvent OnGesture1Recognized;
+    public UnityEvent OnGesture2Recognized;
 
     [SerializeField]
     [Tooltip("Is this gesture recognizer active right now?")]
@@ -66,13 +66,13 @@ public class RecognizeTwo : MonoBehaviour
             if(recognitionState < 0)
             {
                 Debug.Log("===============recognized gesture1============\n");
-                OnGesture1Recognized?.Invoke(1);
+                OnGesture1Recognized?.Invoke();
                 recognitionState = 1;
             }
             else
             {
                 Debug.Log("===============recognized gesture2============\n");
-                OnGesture2Recognized?.Invoke(2);
+                OnGesture2Recognized?.Invoke();
                 recognitionState = -1;
             }
             

@@ -2,40 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Video;
 
-public class MyDistItem : MySensorItem
+public class MyDistItem
 {
     private Camera mainCamera;
-    public VideoPlayer videoPlayer;
 
-    void Start() {
+    public void Init(Camera camera) {
         Debug.Log("Dist Start!!!");
-		if (!mainCamera)
-			mainCamera = Camera.main;
-        // videoPlayer = this.GetComponent<VideoPlayer>();
-        UnityAction triggeredAction = new UnityAction(playVideo);
-        UnityAction untriggeredAction = new UnityAction(pasueVideo);
-        setTriggered(triggeredAction);
-        setUnTriggered(untriggeredAction);
+		mainCamera = camera;
     }
 
-    void Update() {
+    public bool Triggered(Transform transform)
+    {
         if (transform.position[0] - mainCamera.transform.position[0] > 0 && transform.position[0] - mainCamera.transform.position[0] < 5 && System.Math.Abs(transform.position[2] - mainCamera.transform.position[2]) < 2.2)
-            SensorTrigger();
-        else
-            SensorUntrigger();
-    }
-
-    void playVideo() {
-        Debug.Log("In dist!");
-        if (!videoPlayer.isPlaying)
-            videoPlayer.Play();
-    }
-
-    void pasueVideo() {
+        {
+            Debug.Log("In dist!");
+            return true;
+        }
         Debug.Log("Out of dist!");
-        if (videoPlayer.isPlaying)
-            videoPlayer.Pause();
+        return false;
     }
 }
