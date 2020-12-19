@@ -11,15 +11,10 @@ public class SwitchController : MonoBehaviour
     public UnityEvent onGrab;
     public ThrowEvent onThrow;
 
-    // public Button methodButton1;
-    // public Button methodButton2;
-    // public Button methodButton3;
-    // public Button methodButton4;
-    // public Button switchButton;
-
     public float timeBetweenRecognition = 0.5f;
     public float recognitionThreshold = .05f;
     public bool waitForHighConfidenceData = true;
+    public float gazeTime = 0.7f;
     public int curIdx = 0;
     public int methodIdx = 0;
 
@@ -43,18 +38,12 @@ public class SwitchController : MonoBehaviour
         if (curIdx == 2)
             isTriggered = false;
         mySightItem = new MySightItem();
-        mySightItem.Init(mainCamera);
+        mySightItem.Init(mainCamera, gazeTime);
         myDistItem = new MyDistItem();
         myDistItem.Init(mainCamera);
         myGestureItem = new MyGestureItem();
         LoadSkeleton();
         myGestureItem.Init(fistGesture, palmGesture, timeBetweenRecognition, recognitionThreshold, waitForHighConfidenceData);
-
-        // methodButton1.onClick.AddListener(func1);
-        // methodButton2.onClick.AddListener(func2);
-        // methodButton3.onClick.AddListener(func3);
-        // methodButton4.onClick.AddListener(func4);
-        // switchButton.onClick.AddListener(switchFunc);
     }
 
     public void func1()

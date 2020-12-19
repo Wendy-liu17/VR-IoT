@@ -62,8 +62,6 @@ public class MyGestureItem
 
     GestureSO CheckRecognition(OVRSkeleton skeleton, List<OVRBone> fingerBones, OVRHand hand)
     {
-        // if (fingerBones.Count == 0)
-        //     LoadSkeleton();
         if (fingerBones.Count == 0)
             return null;
         if (!hand.IsTracked)
@@ -87,7 +85,6 @@ public class MyGestureItem
         }
         if (!isDiscarded)
         {
-            // Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
             return fistGesture;
         }
 
@@ -107,7 +104,6 @@ public class MyGestureItem
         }
         if (!isDiscarded)
         {
-            // Debug.Log("Gesture recognized with sum distance of: " + sumDistance);
             return palmGesture;
         }
 
